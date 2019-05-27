@@ -11,24 +11,25 @@
 #include "vl53l0x.h"
 
 #define I2C_DEV "/dev/i2c-0"//i2c_dev为i2c　adapter创建的别名
-static int iic_read(int fd, char buff[], int addr, int count)
+static int iic_read(int fd, char buff[], unsigned char addr, int count)
 {
     int res;
     char sendbuffer1[2];
-    sendbuffer1[0]=addr;
-    write(fd,sendbuffer1,1);
+    sendbuffer1[0]=0x53;
+    sendbuffer1[1]=addr;
+    write(fd,sendbuffer1,2);
     res=read(fd,buff,count);
     printf("read %d byte at 0x%x\n", res, addr);
     return res;
 }
 
-static int iic_write(int fd, char buff[], int addr, int count)
+static int iic_write(int fd, char buff[], unsigned char addr, int count)
 {
     int res;
     int i,n;
     static char sendbuffer[100];
     memcpy(sendbuffer+2, buff, count);
-    sendbuffer[0]=addr>>8;
+    sendbuffer[0]=0x52;
     sendbuffer[1]=addr;
     res=write(fd,sendbuffer,count+2);
     printf("write %d byte at 0x%x\n", res, addr);
@@ -68,17 +69,17 @@ int main(void)
             res=iic_read(fd,buf,regaddr,1);
             printf("revision %d bytes read: ",res);
             for(i=0; i<res; i++) {
-                printf("%d ",buf[i]);
+                printf("%x ",buf[i]);
             }
             printf("\n");
             break;
         case '3':
 	    //modle id
 	    regaddr = VL53L0X_REG_IDENTIFICATION_MODEL_ID;
-            res=iic_read(fd,buf,regaddr,2);
-            printf("modle %d bytes read: ",res);
+            res=iic_read(fd,buf,regaddr,1);
+            printf("model %d bytes read: ",res);
             for(i=0; i<res; i++) {
-                printf("%d ",buf[i]);
+                printf("%x ",buf[i]);
             }
             printf("\n");
             break;
