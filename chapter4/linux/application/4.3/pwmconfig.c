@@ -63,6 +63,86 @@ int pwm_export(unsigned int pwm)
 
 }
 
+/* PWM polarity */
+int pwm_polarity(unsigned int pwm, int polarity)
+{
+int fd;
+
+    switch(pwm) {
+    case 0: {
+        fd = open(SYSFS_PWM_DIR "/pwmchip0/pwm0/polarity", O_WRONLY);
+        if (fd < 0) {
+            printf ("\nFailed polarity PWM_B\n");
+            return -1;
+        }
+
+        if(polarity == 1){
+            write(fd, "normal", 6);
+        }
+        else if (polarity == 0){
+            write(fd, "inversed", 8);
+        }
+        close(fd);
+        return 0;
+        break;
+    }
+    case 1: {
+        fd = open(SYSFS_PWM_DIR "/pwmchip1/pwm0/polarity", O_WRONLY);
+        if (fd < 0) {
+            printf ("\nFailed polarity PWM_D\n");
+            return -1;
+        }
+
+        if(polarity == 1){
+            write(fd, "normal", 6);
+        }
+        else if (polarity == 0){
+            write(fd, "inversed", 8);
+        }
+        close(fd);
+        return 0;
+        break;
+    }
+    case 2: {
+        fd = open(SYSFS_PWM_DIR "/pwmchip2/pwm0/polarity", O_WRONLY);
+        if (fd < 0) {
+            printf ("\nFailed polarity PWM_C\n");
+            return -1;
+        }
+
+        if(polarity == 1){
+            write(fd, "normal", 6);
+        }
+        else if (polarity == 0){
+            write(fd, "inversed", 8);
+        }
+        close(fd);
+        return 0;
+        break;
+    }
+    case 3: {
+        fd = open(SYSFS_PWM_DIR "/pwmchip3/pwm0/polarity", O_WRONLY);
+        if (fd < 0) {
+            printf ("\nFailed polarity PWM_C\n");
+            return -1;
+        }
+
+        if(polarity == 1){
+            write(fd, "normal", 6);
+        }
+        else if (polarity == 0){
+            write(fd, "inversed", 8);
+        }
+        close(fd);
+        return 0;
+        break;
+    }
+    default: {
+        printf("wrong PWM channel input\n");
+        return -1;
+    }
+    }
+}
 /* PWM unexport */
 int pwm_unexport(unsigned int pwm)
 {

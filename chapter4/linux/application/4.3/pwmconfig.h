@@ -22,3 +22,4 @@ int pwm_config(unsigned int pwm, unsigned int period, unsigned int duty_cycle);
 int pwm_enable(unsigned int pwm);
 /* PWM disable */
 int pwm_disable(unsigned int pwm);
+int pwm_polarity(unsigned int pwm, int polarity);
